@@ -1,24 +1,37 @@
 package com.bianeck.libraryapi.api.resource;
 
 import com.bianeck.libraryapi.api.dto.BookDTO;
+import com.bianeck.libraryapi.model.entity.Book;
+import com.bianeck.libraryapi.service.BookService;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/books")
 public class BookController {
 
+    private BookService service;
+
+    public BookController(BookService service) {
+        this.service = service;
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public BookDTO create() {
-        BookDTO dto = new BookDTO();
-        dto.setAuthor("Autor");
-        dto.setTitle("Meu Livro");
-        dto.setIsbn("1213212");
-        dto.setId(1l);
-        return dto;
+    public BookDTO create(@RequestBody BookDTO dto) {
+        Book entity = Book.builder()
+                .author(dto.getAuthor())
+                .title(dto.getTitle())
+                .isbn(dto.getIsbn())
+                .build();
+
+        entity = service.save(entity);
+
+        return BookDTO.builder()
+                .id(entity.getId())
+                .author(entity.getAuthor())
+                .title(entity.getTitle())
+                .isbn(entity.getIsbn())
+                .build();
     }
 }
