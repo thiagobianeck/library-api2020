@@ -1,9 +1,14 @@
 package com.bianeck.libraryapi.service;
 
 import com.bianeck.libraryapi.model.entity.Book;
+import com.bianeck.libraryapi.model.repository.BookRepository;
+import com.bianeck.libraryapi.service.impl.BookServiceImpl;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mockito;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -15,6 +20,14 @@ public class BookServiceTest {
 
     BookService service;
 
+    @MockBean
+    BookRepository repository;
+
+    @BeforeEach
+    public void setUp(){
+        this.service = new BookServiceImpl(repository);
+    }
+
     @Test
     @DisplayName("Deve salvar um livro")
     public void saveBookTest() {
@@ -24,6 +37,14 @@ public class BookServiceTest {
                 .author("Fulano")
                 .title("As aventuras")
                 .build();
+
+        Mockito.when(repository.save(book)).thenReturn(
+                Book.builder()
+                        .id(1l)
+                        .isbn("123")
+                        .title("As aventuras")
+                        .author("Fulano")
+                        .build());
 
         Book savedBook = service.save(book);
 
