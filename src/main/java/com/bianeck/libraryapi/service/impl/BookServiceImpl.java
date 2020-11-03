@@ -1,5 +1,6 @@
 package com.bianeck.libraryapi.service.impl;
 
+import com.bianeck.libraryapi.exception.BusinessException;
 import com.bianeck.libraryapi.model.entity.Book;
 import com.bianeck.libraryapi.model.repository.BookRepository;
 import com.bianeck.libraryapi.service.BookService;
@@ -16,6 +17,9 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Book save(Book book) {
+        if(repository.existsByIsbn(book.getIsbn())) {
+            throw new BusinessException("Isbn já cadastrado.");
+        }
         return repository.save(book);
     }
 }

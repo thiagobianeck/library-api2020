@@ -114,6 +114,7 @@ public class BookControllerTest {
 
     }
 
+
     private BookDTO createNewBook() {
         return BookDTO.builder()
                 .author("Arthur")
