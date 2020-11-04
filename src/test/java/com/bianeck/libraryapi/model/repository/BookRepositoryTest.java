@@ -1,5 +1,6 @@
 package com.bianeck.libraryapi.model.repository;
 
+import com.bianeck.libraryapi.model.entity.Book;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -28,9 +29,27 @@ public class BookRepositoryTest {
     public void returnTrueWhenIsbnExists() {
 
         String isbn = "123";
+        Book book = Book.builder()
+                .title("As aventuras")
+                .author("Fulano")
+                .isbn(isbn)
+                .build();
+
+        entityManager.persist(book);
 
         boolean exists = repository.existsByIsbn(isbn);
 
         assertThat(exists).isTrue();
+    }
+
+    @Test
+    @DisplayName("Deve retornar falso quando não existir o livro na base com o isbn informado.")
+    public void returnFalseWhenIsbnDoesntExists() {
+
+        String isbn = "123";
+
+        boolean exists = repository.existsByIsbn(isbn);
+
+        assertThat(exists).isFalse();
     }
 }
