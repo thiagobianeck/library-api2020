@@ -1,16 +1,14 @@
 package com.bianeck.libraryapi.service;
 
+import com.bianeck.libraryapi.exception.BusinessException;
 import com.bianeck.libraryapi.model.entity.Book;
 import com.bianeck.libraryapi.model.entity.Loan;
 import com.bianeck.libraryapi.model.repository.LoanRepository;
-import com.bianeck.libraryapi.service.impl.BookServiceImpl;
 import com.bianeck.libraryapi.service.impl.LoanServiceImpl;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -18,7 +16,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
+import static org.assertj.core.api.Assertions.catchThrowable;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles("test")
@@ -53,6 +52,8 @@ public class LoanServiceTest {
                 .loanDate(LocalDate.now())
                 .build();
 
+        when(repository.existsByBookAndNotReturned(book)).thenReturn(false);
+        
         when(repository.save(savingLoan)).thenReturn(savedLoan);
 
         Loan loan = service.save(savingLoan);
@@ -63,5 +64,27 @@ public class LoanServiceTest {
         assertThat(loan.getLoanDate()).isEqualTo(savedLoan.getLoanDate());
     }
 
+    @Test
+    @DisplayName("Deve lançar um erro de negócio ao salvar um empréstimo com livro já emprestado")
+    public void loanedBookSaveTest() {
+
+        Book book = Book.builder().id(1L).build();
+        String customer = "Fulano";
+        Loan savingLoan = Loan.builder()
+                .book(book)
+                .customer(customer)
+                .loanDate(LocalDate.now())
+                .build();
+
+        when(repository.existsByBookAndNotReturned(book)).thenReturn(true);
+
+        Throwable exception = catchThrowable(() -> service.save(savingLoan));
+
+        assertThat(exception).isInstanceOf(BusinessException.class)
+                .hasMessage("Book already loaned");
+
+        verify(repository, never()).save(savingLoan);
+
+    }
 
 }

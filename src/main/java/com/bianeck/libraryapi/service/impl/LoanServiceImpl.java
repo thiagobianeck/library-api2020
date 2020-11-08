@@ -1,5 +1,6 @@
 package com.bianeck.libraryapi.service.impl;
 
+import com.bianeck.libraryapi.exception.BusinessException;
 import com.bianeck.libraryapi.model.entity.Loan;
 import com.bianeck.libraryapi.model.repository.LoanRepository;
 import com.bianeck.libraryapi.service.LoanService;
@@ -16,6 +17,9 @@ public class LoanServiceImpl implements LoanService {
 
     @Override
     public Loan save(Loan loan) {
+        if(repository.existsByBookAndNotReturned(loan.getBook())) {
+            throw new BusinessException("Book already loaned");
+        }
         return repository.save(loan);
     }
 }
