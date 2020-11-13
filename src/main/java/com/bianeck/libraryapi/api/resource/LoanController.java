@@ -1,6 +1,7 @@
 package com.bianeck.libraryapi.api.resource;
 
 import com.bianeck.libraryapi.api.dto.LoanDTO;
+import com.bianeck.libraryapi.api.dto.ReturnedLoanDTO;
 import com.bianeck.libraryapi.model.entity.Book;
 import com.bianeck.libraryapi.model.entity.Loan;
 import com.bianeck.libraryapi.service.BookService;
@@ -35,5 +36,13 @@ public class LoanController {
 
         entity = service.save(entity);
         return entity.getId();
+    }
+
+    @PatchMapping("{id}")
+    public void returnBook(@PathVariable Long id, @RequestBody ReturnedLoanDTO dto) {
+
+        Loan loan = service.getById(id).get();
+        loan.setReturned(dto.getReturned());
+        service.update(loan);
     }
 }
