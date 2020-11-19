@@ -1,12 +1,16 @@
 package com.bianeck.libraryapi.api.resource;
 
 import com.bianeck.libraryapi.api.dto.LoanDTO;
+import com.bianeck.libraryapi.api.dto.LoanFilterDTO;
 import com.bianeck.libraryapi.api.dto.ReturnedLoanDTO;
 import com.bianeck.libraryapi.model.entity.Book;
 import com.bianeck.libraryapi.model.entity.Loan;
 import com.bianeck.libraryapi.service.BookService;
 import com.bianeck.libraryapi.service.LoanService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -45,5 +49,11 @@ public class LoanController {
                 HttpStatus.NOT_FOUND));
         loan.setReturned(dto.getReturned());
         service.update(loan);
+    }
+
+    @GetMapping
+    public Page<LoanDTO> find(LoanFilterDTO dto, Pageable page) {
+        Page<Loan> result = service.find(dto, page);
+        return null;
     }
 }

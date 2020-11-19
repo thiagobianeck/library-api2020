@@ -1,9 +1,12 @@
 package com.bianeck.libraryapi.service.impl;
 
+import com.bianeck.libraryapi.api.dto.LoanFilterDTO;
 import com.bianeck.libraryapi.exception.BusinessException;
 import com.bianeck.libraryapi.model.entity.Loan;
 import com.bianeck.libraryapi.model.repository.LoanRepository;
 import com.bianeck.libraryapi.service.LoanService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -33,5 +36,10 @@ public class LoanServiceImpl implements LoanService {
     @Override
     public Loan update(Loan loan) {
         return repository.save(loan);
+    }
+
+    @Override
+    public Page<Loan> find(LoanFilterDTO filterDTO, Pageable pageable) {
+        return null;
     }
 }
