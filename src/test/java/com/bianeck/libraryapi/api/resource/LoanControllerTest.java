@@ -194,7 +194,7 @@ public class LoanControllerTest {
 
     @Test
     @DisplayName("Deve filtrar empréstimos.")
-    public void findBooksTest() throws Exception{
+    public void findLoansTest() throws Exception{
         Long id = 1L;
 
         Loan loan = LoanServiceTest.createLoan();
@@ -207,7 +207,7 @@ public class LoanControllerTest {
                 .willReturn(new PageImpl<Loan>(
                         Collections.singletonList(loan), PageRequest.of(0,10),1));
 
-        String queryString = String.format("?isbn=%s&customer=%s&page=0&size=100",
+        String queryString = String.format("?isbn=%s&customer=%s&page=0&size=10",
                 book.getIsbn(), loan.getCustomer());
 
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders
