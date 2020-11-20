@@ -130,7 +130,6 @@ public class BookServiceTest {
         Mockito.verify(repository, Mockito.times(1)).delete(book);
     }
 
-
     @Test
     @DisplayName("Deve ocorrer erro ao tentar deletar livro inexistente.")
     public void deleteInvalidBookTest() {
