@@ -2,6 +2,7 @@ package com.bianeck.libraryapi.service.impl;
 
 import com.bianeck.libraryapi.api.dto.LoanFilterDTO;
 import com.bianeck.libraryapi.exception.BusinessException;
+import com.bianeck.libraryapi.model.entity.Book;
 import com.bianeck.libraryapi.model.entity.Loan;
 import com.bianeck.libraryapi.model.repository.LoanRepository;
 import com.bianeck.libraryapi.service.LoanService;
@@ -41,5 +42,10 @@ public class LoanServiceImpl implements LoanService {
     @Override
     public Page<Loan> find(LoanFilterDTO filterDTO, Pageable pageable) {
         return repository.findByBookIsbnOrCustomer(filterDTO.getIsbn(), filterDTO.getCustomer(), pageable);
+    }
+
+    @Override
+    public Page<Loan> getLoansByBook(Book book, Pageable pageable) {
+        return null;
     }
 }
