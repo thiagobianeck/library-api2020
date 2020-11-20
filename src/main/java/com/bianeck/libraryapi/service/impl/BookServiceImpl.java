@@ -4,6 +4,7 @@ import com.bianeck.libraryapi.exception.BusinessException;
 import com.bianeck.libraryapi.model.entity.Book;
 import com.bianeck.libraryapi.model.repository.BookRepository;
 import com.bianeck.libraryapi.service.BookService;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
@@ -15,7 +16,7 @@ import java.util.Optional;
 @Service
 public class BookServiceImpl implements BookService {
 
-    private BookRepository repository;
+    private final BookRepository repository;
 
     public BookServiceImpl(BookRepository repository) {
         this.repository = repository;
