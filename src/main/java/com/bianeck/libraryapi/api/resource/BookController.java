@@ -2,8 +2,6 @@ package com.bianeck.libraryapi.api.resource;
 
 import com.bianeck.libraryapi.api.dto.BookDTO;
 import com.bianeck.libraryapi.api.dto.LoanDTO;
-import com.bianeck.libraryapi.api.exception.ApiErrors;
-import com.bianeck.libraryapi.exception.BusinessException;
 import com.bianeck.libraryapi.model.entity.Book;
 import com.bianeck.libraryapi.model.entity.Loan;
 import com.bianeck.libraryapi.service.BookService;
@@ -14,14 +12,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
